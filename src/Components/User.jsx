@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useParams, useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useParams, useNavigate } from 'react-router-dom'; 
 
 function User() {
-    const { id } = useParams(); // Current user ID from URL
-    const navigate = useNavigate(); // Hook for programmatic navigation
+    const { id } = useParams(); 
+    const navigate = useNavigate(); 
 
     const [user, setUser] = useState(null);
-    const [allUserIds, setAllUserIds] = useState([]); // To store all user IDs for navigation
+    const [allUserIds, setAllUserIds] = useState([]); 
     const [loadingUser, setLoadingUser] = useState(true);
     const [loadingAllUsers, setLoadingAllUsers] = useState(true);
     const [error, setError] = useState(null);
@@ -25,18 +25,18 @@ function User() {
                 .catch(err => {
                     console.error("Error fetching user:", err);
                     setError("Failed to load user details.");
-                    setUser(null); // Clear user data on error
+                    setUser(null); 
                     setLoadingUser(false);
                 });
         }
-    }, [id]); // Re-run when 'id' changes
+    }, [id]); 
 
-    // Effect to fetch all user IDs (only once or when component mounts/unmounts)
+    
     useEffect(() => {
         setLoadingAllUsers(true);
         axios.get("https://jsonplaceholder.typicode.com/users")
             .then(res => {
-                const ids = res.data.map(u => u.id).sort((a, b) => a - b); // Get and sort IDs
+                const ids = res.data.map(u => u.id).sort((a, b) => a - b); 
                 setAllUserIds(ids);
                 setLoadingAllUsers(false);
             })
@@ -44,23 +44,23 @@ function User() {
                 console.error("Error fetching all user IDs:", err);
                 setLoadingAllUsers(false);
             });
-    }, []); // Empty dependency array means this runs only once on mount
+    }, []); 
 
-    const currentIndex = allUserIds.indexOf(parseInt(id)); // Convert id to number for comparison
+    const currentIndex = allUserIds.indexOf(parseInt(id)); 
     const hasPrevious = currentIndex > 0;
     const hasNext = currentIndex < allUserIds.length - 1;
 
     const handlePrevious = () => {
         if (hasPrevious) {
             const prevId = allUserIds[currentIndex - 1];
-            navigate(`/users/${prevId}`); // Navigate to previous user
+            navigate(`/users/${prevId}`); 
         }
     };
 
     const handleNext = () => {
         if (hasNext) {
             const nextId = allUserIds[currentIndex + 1];
-            navigate(`/users/${nextId}`); // Navigate to next user
+            navigate(`/users/${nextId}`); 
         }
     };
 
